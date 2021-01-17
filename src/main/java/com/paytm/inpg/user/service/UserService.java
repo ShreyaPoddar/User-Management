@@ -25,4 +25,25 @@ public class UserService {
     {
         repository.findById(userid).orElse(null);
     }
+
+    //UPDATE METHOD
+    public User updateProduct(User user)
+    {
+        User existingUser=repository.findById(user.getUserid()).orElse(null);
+        existingUser.setUsername(user.getUsername());
+        existingUser.setFName(user.getFName());
+        existingUser.setLName(user.getLName());
+        existingUser.setMobileNumber(user.getMobileNumber());
+        existingUser.setEmailID(user.getEmailID());
+        existingUser.setAddress1(user.getAddress1());
+        existingUser.setAddress2(user.getAddress2());
+        return repository.save(existingUser);
+    }
+    //DELETE METHOD
+    public String deleteUser(int userid)
+    {
+        repository.delete(userid);
+        return "User's Data is deleted "+userid;
+
+    }
 }
