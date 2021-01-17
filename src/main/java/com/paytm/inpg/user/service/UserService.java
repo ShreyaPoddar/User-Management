@@ -27,7 +27,7 @@ public class UserService {
     }
 
     //UPDATE METHOD
-    public User updateProduct(User user)
+    public User updateUser(User user)
     {
         User existingUser=repository.findById(user.getUserid()).orElse(null);
         existingUser.setUsername(user.getUsername());
