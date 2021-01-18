@@ -31,10 +31,10 @@ public class UserService {
     {
         User existingUser=repository.findById(user.getUserid()).orElse(null);
         existingUser.setUsername(user.getUsername());
-        existingUser.setFName(user.getFName());
-        existingUser.setLName(user.getLName());
-        existingUser.setMobileNumber(user.getMobileNumber());
-        existingUser.setEmailID(user.getEmailID());
+        existingUser.setFname(user.getFname());
+        existingUser.setLname(user.getLname());
+        existingUser.setMobilenumber(user.getMobilenumber());
+        existingUser.setEmailid(user.getEmailid());
         existingUser.setAddress1(user.getAddress1());
         existingUser.setAddress2(user.getAddress2());
         return repository.save(existingUser);
