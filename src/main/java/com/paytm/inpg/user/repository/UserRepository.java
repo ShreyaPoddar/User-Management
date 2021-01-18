@@ -5,4 +5,5 @@ import com.paytm.inpg.user.entity.User;
 
 public interface UserRepository extends JpaRepository<User,Integer> {
 
+
 }

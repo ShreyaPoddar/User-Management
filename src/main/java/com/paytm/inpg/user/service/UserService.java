@@ -23,7 +23,7 @@ public class UserService {
     }
     public User getUserByID(int userid)
     {
-        repository.findById(userid).orElse(null);
+        return repository.findById(userid).orElse(null);
     }
 
     //UPDATE METHOD
@@ -42,7 +42,7 @@ public class UserService {
     //DELETE METHOD
     public String deleteUser(int userid)
     {
-        repository.delete(userid);
+        repository.deleteById(userid);
         return "User's Data is deleted "+userid;
 
     }
