@@ -15,9 +15,19 @@ public class UserController {
 
   //Post method
     @PostMapping("/addUser")
-    public User addUser(@RequestBody User user)
+    public String addUser(@RequestBody User user)
     {
-        return service.saveUser(user);
+        List<User> emails=service.findByEmailid(user.getEmailid());
+        List<User> usernames = service.findByUsername(user.getUsername());
+        List<User> mobile_numbers = service.findByMobilenumber(user.getMobilenumber());
+        if(!emails.isEmpty())
+            return "User with same emailID already exists";
+        else if(!usernames.isEmpty())
+            return "User with same username already exists";
+        else if(!mobile_numbers.isEmpty())
+            return "User with same mobile number already exists";
+        service.saveUser(user);
+        return "User's data successfully saved";
     }
     //Get method
     @GetMapping("/users")

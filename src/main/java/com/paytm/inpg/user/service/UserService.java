@@ -4,7 +4,6 @@ import com.paytm.inpg.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.plaf.PanelUI;
 import java.util.List;
 
 @Service
@@ -12,9 +11,23 @@ public class UserService {
     @Autowired
     private UserRepository repository;
     //POST METHOD
-    public User saveUser(User user)
+
+    public List<User> findByEmailid(String emailid)
     {
-       return repository.save(user);
+        return repository.findByEmailid(emailid);
+    }
+
+    public List<User> findByUsername(String username)
+    {
+        return repository.findByUsername(username);
+    }
+
+    public List<User> findByMobilenumber(String mobilenumber)
+    {
+        return repository.findByMobilenumber(mobilenumber);
+    }
+    public void saveUser(User user)
+    { repository.save(user);
     }
     //GET METHOD
     public List<User> getUser()
