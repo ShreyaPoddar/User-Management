@@ -42,16 +42,22 @@ public class UserController {
     }
 
     //update method
-    @PutMapping("/update")
-    public User updateUser(@RequestBody User user)
-    {
-        return service.updateUser(user);
+    @PutMapping("/update/{userid}")
+    public String updateUser(@RequestBody User user,@PathVariable(value = "userid")int id) {
+        if (service.getUserByID(id) == null)
+            return "User doesn't exist";
+        else {
+            service.updateUser(user);
+            return "User data updated";
+        }
     }
 
     //delete method
     @DeleteMapping("/delete/{userid}")
     public String deleteUser(@PathVariable int userid)
     {
+
+
         return service.deleteUser(userid);
     }
 }
