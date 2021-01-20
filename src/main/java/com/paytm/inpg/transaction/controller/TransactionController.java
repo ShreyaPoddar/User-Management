@@ -37,7 +37,7 @@ public class TransactionController {
         return transactionservice.getTransaction();
     }
     //Gets the status of a particular transaction id
-    @GetMapping("/transaction/{transactiionid}")
+    @GetMapping("/transaction/{id}")
     public String findTransactionByTransactionid(@PathVariable int id)
     {
         List<Transaction> transactions=transactionservice.findByTransactionid(id);
