@@ -14,8 +14,9 @@ import java.util.List;
 public class WalletService {
 
     @Autowired
-    private UserRepository userrepository;
-    private WalletRepository walletrepository;
+     private UserRepository userrepository;
+    @Autowired
+     private WalletRepository walletrepository;
 
     //Post method
     public List<User> findByMobilenumber(String mobilenumber) //Finding user data from user table

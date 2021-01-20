@@ -3,12 +3,10 @@ package com.paytm.inpg.wallet.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-    @Data
+import javax.persistence.*;
+
+@Data
     @AllArgsConstructor
     @NoArgsConstructor
     @Entity
@@ -16,6 +14,7 @@ import javax.persistence.Table;
     public class Wallet {
         @Id
         @GeneratedValue()
+        int id;
         private String phonenumber;
         private Double balance;
 
