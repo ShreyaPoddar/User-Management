@@ -23,10 +23,10 @@ public class WalletService {
 
         return userrepository.findByMobilenumber(mobilenumber);
     }
-    public List<Wallet> findByPhonenumber(String mobilenumber)
+    public List<Wallet> findByPhonenumber(String phonenumber)
     {
 
-        return walletrepository.findByPhonenumber(mobilenumber);
+        return walletrepository.findByPhonenumber(phonenumber);
     }
     public void createWallet(Wallet wallet)
     {

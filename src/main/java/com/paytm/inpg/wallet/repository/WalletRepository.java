@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface WalletRepository extends JpaRepository<Wallet,Integer> {
-    public List<Wallet> findByPhonenumber(String mobilenumber);
+    public List<Wallet> findByPhonenumber(String phonenumber);
 }

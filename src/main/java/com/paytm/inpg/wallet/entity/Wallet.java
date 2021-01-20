@@ -8,12 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
-
-
-
-
-
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
@@ -22,7 +16,7 @@ import javax.persistence.Table;
     public class Wallet {
         @Id
         @GeneratedValue()
-        private String mobilenumber;
+        private String phonenumber;
         private Double balance;
 
         @PrePersist
