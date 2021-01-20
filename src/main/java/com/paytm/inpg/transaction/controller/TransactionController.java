@@ -26,9 +26,9 @@ public class TransactionController {
             return "Payee/Payer wallet doesn't exist";
         else if(transactionservice.getTransactionAmount(transaction)>payer_phone_numbers.get(0).getBalance())
             return "Payer doesn't have sufficient balance";
-
+        payer_phone_numbers.get(0).setBalance(-transactionservice.getTransactionAmount(transaction));
+        payee_phone_numbers.get(0).setBalance(transactionservice.getTransactionAmount(transaction));
         transactionservice.makeTransaction(transaction);
-
         return "Transaction successful";
     }
     //Get method
