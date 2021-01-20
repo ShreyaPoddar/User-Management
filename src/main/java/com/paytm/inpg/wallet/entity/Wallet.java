@@ -19,7 +19,7 @@ import javax.persistence.*;
         private Double balance;
 
         @PrePersist
-        public void setBalance() {
-            this.balance = new Double(0);
+        public void setBalance(Double balance) {
+            this.balance += balance;
         }
     }
