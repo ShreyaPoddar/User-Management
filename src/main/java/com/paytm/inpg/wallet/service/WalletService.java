@@ -18,18 +18,27 @@ public class WalletService {
     private WalletRepository walletrepository;
 
     //Post method
-    public List<User> findByMobilenumber(String mobilenumber)
+    public List<User> findByMobilenumber(String mobilenumber) //Finding user data from user table
     {
 
         return userrepository.findByMobilenumber(mobilenumber);
     }
-    public List<Wallet> findByPhonenumber(String phonenumber)
+    public List<Wallet> findByPhonenumber(String phonenumber) //Finding user data from wallet table
     {
 
         return walletrepository.findByPhonenumber(phonenumber);
     }
-    public void createWallet(Wallet wallet)
+    public void createWallet(Wallet wallet)//Creating user wallet
     {
         walletrepository.save(wallet);
+    }
+    //GET METHOD
+    public List<Wallet> getWallet() //Returning list of wallets
+    {
+        return walletrepository.findAll();
+    }
+    public Wallet getUserByPhonenumber(String phonenumber) //Returning particular wallet
+    {
+        return (Wallet) walletrepository.findByPhonenumber(phonenumber);
     }
 }

@@ -5,10 +5,7 @@ import com.paytm.inpg.user.entity.User;
 import com.paytm.inpg.wallet.entity.Wallet;
 import com.paytm.inpg.wallet.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,4 +34,17 @@ public class WalletController {
             return "User's wallet is successfully created";
         }
     }
+    //Get method
+
+    @GetMapping("/wallets")
+    //Gives all the created wallets in the wallet table
+    public List<Wallet> findAllWallets() {
+        return service.getWallet();
+    }
+  //Give the particular searched wallet
+    @GetMapping("/wallet/{phonenumber}")
+    public Wallet findWalletByPhonenumber(@PathVariable String phonenumber) {
+        return service.getUserByPhonenumber(phonenumber);
+    }
+
 }
