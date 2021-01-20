@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 
 
-public class Wallet {
+
 
 
 
@@ -19,17 +19,14 @@ public class Wallet {
     @NoArgsConstructor
     @Entity
     @Table(name="USER_WALLET")
-    public class User {
+    public class Wallet {
         @Id
+        @GeneratedValue()
         private String mobilenumber;
         private Double balance;
 
         @PrePersist
-        public void setBalance(){
+        public void setBalance() {
             this.balance = new Double(0);
         }
     }
-
-
-
-}
