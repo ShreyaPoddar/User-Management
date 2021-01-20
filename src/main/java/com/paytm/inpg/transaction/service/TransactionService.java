@@ -38,4 +38,9 @@ public class TransactionService {
     {
         return transactionrepository.findAll();
     }
+    public List<Transaction> findByTransactionid(Integer id) //Finding user data from wallet table
+    {
+
+        return transactionrepository.findByTransactionid(id);
+    }
 }

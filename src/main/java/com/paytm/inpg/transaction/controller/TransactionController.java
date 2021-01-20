@@ -2,9 +2,7 @@ package com.paytm.inpg.transaction.controller;
 
 import com.paytm.inpg.transaction.entity.Transaction;
 import com.paytm.inpg.transaction.service.TransactionService;
-import com.paytm.inpg.user.entity.User;
 import com.paytm.inpg.wallet.entity.Wallet;
-import com.paytm.inpg.wallet.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +20,12 @@ public class TransactionController {
         //Method to make transaction from payer to payee's account
         List<Wallet> payer_phone_numbers = transactionservice.findByPhonenumber(transaction.getPayerphonenumber());
         List<Wallet> payee_phone_numbers = transactionservice.findByPhonenumber(transaction.getPayeephonenumber());
-        if (payee_phone_numbers.isEmpty() && payer_phone_numbers.isEmpty())
+        if (payee_phone_numbers.isEmpty() || payer_phone_numbers.isEmpty())
             return "Payee/Payer wallet doesn't exist";
         else if(transactionservice.getTransactionAmount(transaction)>payer_phone_numbers.get(0).getBalance())
             return "Payer doesn't have sufficient balance";
-        payer_phone_numbers.get(0).setBalance(-transactionservice.getTransactionAmount(transaction));
-        payee_phone_numbers.get(0).setBalance(transactionservice.getTransactionAmount(transaction));
+        payer_phone_numbers.get(0).changeBalance(-transactionservice.getTransactionAmount(transaction));
+        payee_phone_numbers.get(0).changeBalance(transactionservice.getTransactionAmount(transaction));
         transactionservice.makeTransaction(transaction);
         return "Transaction successful";
     }
@@ -42,11 +40,16 @@ public class TransactionController {
     @GetMapping("/transaction/{transactiionid}")
     public String findTransactionByTransactionid(@PathVariable int id)
     {
-
+        List<Transaction> transactions=transactionservice.findByTransactionid(id);
+                if(!transactions.isEmpty())
+                return "Successful";
+                else
+                    return "Failed";
     }
     //Give the transaction summary of a particular user
     @GetMapping("/transactionsummary")
     public List<Transaction> findByuserid() {
+        return transactionservice.getTransaction();
 
     }
 

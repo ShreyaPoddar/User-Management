@@ -14,12 +14,12 @@ import javax.persistence.*;
     public class Transaction {
         @Id
         @GeneratedValue()
-        private int transactiionid;
+        private int transactionid;
         private String payerphonenumber;
         private String payeephonenumber;
         private Double amount;
 
     }
 
-}
+
 

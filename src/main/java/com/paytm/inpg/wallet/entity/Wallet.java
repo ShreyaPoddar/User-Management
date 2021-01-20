@@ -18,8 +18,8 @@ import javax.persistence.*;
         private String phonenumber;
         private Double balance;
 
-        @PrePersist
-        public void setBalance(Double balance) {
+
+        public void changeBalance(Double balance) {
             this.balance += balance;
         }
     }
