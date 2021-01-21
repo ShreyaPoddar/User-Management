@@ -13,7 +13,7 @@ import javax.persistence.*;
     @Table(name="TRANSACTION_TABLE")
     public class Transaction {
         @Id
-        @GeneratedValue()
+        @GeneratedValue(strategy= GenerationType.AUTO)
         private int transactionid;
         private String payerphonenumber;
         private String payeephonenumber;

@@ -40,7 +40,7 @@ public class TransactionService {
     }
     public List<Transaction> findByTransactionid(int id) //Finding user data from wallet table
     {
-
+0
         return transactionrepository.findByTransactionid(id);
     }
 }

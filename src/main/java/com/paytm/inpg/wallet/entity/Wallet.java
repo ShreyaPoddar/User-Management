@@ -13,13 +13,13 @@ import javax.persistence.*;
     @Table(name="USER_WALLET")
     public class Wallet {
         @Id
-        @GeneratedValue()
+        @GeneratedValue(strategy= GenerationType.AUTO)
         int id;
         private String phonenumber;
         private Double balance;
 
 
-        public void changeBalance(Double balance) {
-            this.balance += balance;
-        }
+//        public void changeBalance(Double balance) {
+//            this.balance += balance;
+//        }
     }

@@ -26,8 +26,8 @@ public class WalletController {
         if (mobile_numbers.isEmpty())
             return "User data doesn't exist in user table";
 //        //if the user wallet is already created
-//        else if (!phone_numbers.isEmpty())
-//            return "User with same mobile number already exists";
+        else if (!phone_numbers.isEmpty())
+            return "User with same mobile number already exists";
 //        //if the user data exists in the user table and wallet is not created then creating user's wallet
 
         walletservice.createWallet(wallet);

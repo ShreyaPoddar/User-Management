@@ -20,12 +20,22 @@ public class TransactionController {
         //Method to make transaction from payer to payee's account
         List<Wallet> payer_phone_numbers = transactionservice.findByPhonenumber(transaction.getPayerphonenumber());
         List<Wallet> payee_phone_numbers = transactionservice.findByPhonenumber(transaction.getPayeephonenumber());
+
+        //Checking if payer and payee wallet exists or not
         if (payee_phone_numbers.isEmpty() || payer_phone_numbers.isEmpty())
             return "Payee/Payer wallet doesn't exist";
         else if(transactionservice.getTransactionAmount(transaction)>payer_phone_numbers.get(0).getBalance())
             return "Payer doesn't have sufficient balance";
-        payer_phone_numbers.get(0).changeBalance(-transactionservice.getTransactionAmount(transaction));
-        payee_phone_numbers.get(0).changeBalance(transactionservice.getTransactionAmount(transaction));
+
+        //If both the payer and payee wallets ahave sufficient balance then making the transaction
+
+        //Payer's balance gets debited
+        Double debit=payer_phone_numbers.get(0).getBalance() - transactionservice.getTransactionAmount(transaction);
+        payer_phone_numbers.get(0).setBalance(debit);
+
+        //Payee's balance gets credited
+        Double credit=payee_phone_numbers.get(0).getBalance() + transactionservice.getTransactionAmount(transaction);
+        payee_phone_numbers.get(0).setBalance(credit);
         transactionservice.makeTransaction(transaction);
         return "Transaction successful";
     }
@@ -36,6 +46,8 @@ public class TransactionController {
     public List<Transaction> findAllTransactions() {
         return transactionservice.getTransaction();
     }
+
+
     //Gets the status of a particular transaction id
     @GetMapping("/transaction/{id}")
     public String findTransactionByTransactionid(@PathVariable int id)
@@ -46,6 +58,7 @@ public class TransactionController {
                 else
                     return "Failed";
     }
+
     //Give the transaction summary of a particular user
     @GetMapping("/transactionsummary")
     public List<Transaction> findByuserid() {
