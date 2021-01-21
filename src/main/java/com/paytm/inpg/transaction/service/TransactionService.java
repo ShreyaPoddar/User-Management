@@ -2,6 +2,7 @@ package com.paytm.inpg.transaction.service;
 
 import com.paytm.inpg.transaction.entity.Transaction;
 import com.paytm.inpg.transaction.repository.TransactionRepository;
+import com.paytm.inpg.user.entity.User;
 import com.paytm.inpg.user.repository.UserRepository;
 import com.paytm.inpg.wallet.entity.Wallet;
 import com.paytm.inpg.wallet.repository.WalletRepository;
@@ -11,7 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TransactionService {
+public class TransactionService
+{
 
     @Autowired
     private UserRepository userrepository;
@@ -40,7 +42,21 @@ public class TransactionService {
     }
     public List<Transaction> findByTransactionid(int id) //Finding user data from wallet table
     {
-0
+
         return transactionrepository.findByTransactionid(id);
+    }
+    public List<User> findByUserid(int id) //Finding user data from wallet table
+    {
+
+        return userrepository.findByUserid(id);
+    }
+
+    public List<Transaction> findByPayerphonenumber(String payerphonenumber)
+    {
+        return transactionrepository.findByPayerphonenumber(payerphonenumber);
+    }
+    public List<Transaction> findByPayeephonenumber(String payeephonenumber)
+    {
+        return transactionrepository.findByPayeephonenumber(payeephonenumber);
     }
 }

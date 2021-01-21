@@ -2,10 +2,12 @@ package com.paytm.inpg.transaction.controller;
 
 import com.paytm.inpg.transaction.entity.Transaction;
 import com.paytm.inpg.transaction.service.TransactionService;
+import com.paytm.inpg.user.entity.User;
 import com.paytm.inpg.wallet.entity.Wallet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.*;
 import java.util.List;
 
 @RestController
@@ -60,9 +62,20 @@ public class TransactionController {
     }
 
     //Give the transaction summary of a particular user
-    @GetMapping("/transactionsummary")
-    public List<Transaction> findByuserid() {
-        return transactionservice.getTransaction();
+    @GetMapping("/transactionsummary/{id}")
+    public List<Transaction> findByuserid(@PathVariable int id) {
+        List<User> users=transactionservice.findByUserid(id);
+        String number=users.get(0).getMobilenumber();
+        List<Transaction> payer_details=transactionservice.findByPayerphonenumber(number);
+        List<Transaction> payee_details=transactionservice.findByPayeephonenumber(number);
+        payee_details.addAll(payer_details);
+        if(payee_details.isEmpty())
+        {
+            List <Transaction> blank = new ArrayList<>();
+            return blank;
+        }
+        else
+            return payee_details;
 
     }
 
