@@ -40,12 +40,12 @@ public class TransactionService
     {
         return transactionrepository.findAll();
     }
-    public List<Transaction> findByTransactionid(int id) //Finding user data from wallet table
+    public List<Transaction> findByTransactionid(int id) //Finding transaction data of particular id
     {
 
         return transactionrepository.findByTransactionid(id);
     }
-    public List<User> findByUserid(int id) //Finding user data from wallet table
+    public List<User> findByUserid(int id) //Finding user data from user table
     {
 
         return userrepository.findByUserid(id);

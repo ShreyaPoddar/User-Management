@@ -38,6 +38,8 @@ public class TransactionController {
         //Payee's balance gets credited
         Double credit=payee_phone_numbers.get(0).getBalance() + transactionservice.getTransactionAmount(transaction);
         payee_phone_numbers.get(0).setBalance(credit);
+
+        //adding the transaction to the transaction table
         transactionservice.makeTransaction(transaction);
         return "Transaction successful";
     }
@@ -54,6 +56,7 @@ public class TransactionController {
     @GetMapping("/transaction/{id}")
     public String findTransactionByTransactionid(@PathVariable int id)
     {
+        //Finding is the transaction has occured or not
         List<Transaction> transactions=transactionservice.findByTransactionid(id);
                 if(!transactions.isEmpty())
                 return "Successful";
@@ -64,10 +67,20 @@ public class TransactionController {
     //Give the transaction summary of a particular user
     @GetMapping("/transactionsummary/{id}")
     public List<Transaction> findByuserid(@PathVariable int id) {
+
+        //finding the users with the given user id
         List<User> users=transactionservice.findByUserid(id);
+
+        //storing the phone number of the user
         String number=users.get(0).getMobilenumber();
+
+        //making the list of transactions having the user as payer
         List<Transaction> payer_details=transactionservice.findByPayerphonenumber(number);
+
+        ////making the list of transactions having the user as payee
         List<Transaction> payee_details=transactionservice.findByPayeephonenumber(number);
+
+        //Meriging both the lists
         payee_details.addAll(payer_details);
         if(payee_details.isEmpty())
         {

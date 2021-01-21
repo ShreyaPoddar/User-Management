@@ -16,8 +16,11 @@ public class UserController {
     //Post method
     @PostMapping("/addUser")
     public String addUser(@RequestBody User user) {
+        //Finding the user with same email id
         List<User> emails = service.findByEmailid(user.getEmailid());
+        //Finding the user with same username
         List<User> usernames = service.findByUsername(user.getUsername());
+        //Finding the user with same mobile number
         List<User> mobile_numbers = service.findByMobilenumber(user.getMobilenumber());
         if (!emails.isEmpty())
             return "User with same emailID already exists";
@@ -25,6 +28,8 @@ public class UserController {
             return "User with same username already exists";
         else if (!mobile_numbers.isEmpty())
             return "User with same mobile number already exists";
+
+        //If the user data doesn't exist in the Table then saving the data
         service.saveUser(user);
         return "User's data successfully saved";
     }
@@ -43,6 +48,7 @@ public class UserController {
     //update method
     @PutMapping("/update/{userid}")
     public String updateUser(@RequestBody User user, @PathVariable(value = "userid") int id) {
+        //Checking if particular user exists in the table or not
         if (service.getUserByID(id) != null) {
             service.updateUser(user);
             return "User data updated";
