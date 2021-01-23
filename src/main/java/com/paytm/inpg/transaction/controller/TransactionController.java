@@ -5,9 +5,11 @@ import com.paytm.inpg.transaction.service.TransactionService;
 import com.paytm.inpg.user.entity.User;
 import com.paytm.inpg.wallet.entity.Wallet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -47,8 +49,8 @@ public class TransactionController {
 
     @GetMapping("/transactions")
     //Gives all the transactions
-    public List<Transaction> findAllTransactions() {
-        return transactionservice.getTransaction();
+    public Page<Transaction> findAllTransactions(Pageable page)  {
+    return transactionservice.getTransaction(page);
     }
 
 
@@ -71,6 +73,7 @@ public class TransactionController {
         //finding the users with the given user id
         List<User> users=transactionservice.findByUserid(id);
 
+
         //storing the phone number of the user
         String number=users.get(0).getMobilenumber();
 
@@ -80,9 +83,9 @@ public class TransactionController {
         ////making the list of transactions having the user as payee
         List<Transaction> payee_details=transactionservice.findByPayeephonenumber(number);
 
-        //Meriging both the lists
+        //Merging both the lists
         payee_details.addAll(payer_details);
-        if(payee_details.isEmpty())
+        if(payee_details.isEmpty() || users.isEmpty())
         {
             List <Transaction> blank = new ArrayList<>();
             return blank;

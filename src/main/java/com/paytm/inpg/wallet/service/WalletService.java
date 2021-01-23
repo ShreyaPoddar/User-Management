@@ -42,4 +42,11 @@ public class WalletService {
     {
         return (Wallet) walletrepository.findByPhonenumber(phonenumber);
     }
+    public Wallet updateWallet(Wallet wallet,Double balance)
+    {
+        Wallet existingWallet= (Wallet) walletrepository.findByPhonenumber(wallet.getPhonenumber());
+        existingWallet.setBalance(wallet.getBalance()+balance);
+        return walletrepository.save(existingWallet);
+
+    }
 }

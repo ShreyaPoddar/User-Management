@@ -47,4 +47,19 @@ public class WalletController {
         return walletservice.getUserByPhonenumber(phonenumber);
     }
 
+
+    @PutMapping("/updatewallet/{phonenumber}")
+    public String updateWallet(@RequestBody Wallet wallet, @PathVariable(value = "phonenumber") String phonenumber) {
+        //Checking if particular user exists in the table or not
+        if(walletservice.getUserByPhonenumber(phonenumber)!=null)
+        {
+            walletservice.updateWallet(wallet,wallet.getBalance());
+            return "User wallet updated";
+        }
+        else {
+            return "User wallet doesn't exist";
+
+        }
+    }
+
 }
