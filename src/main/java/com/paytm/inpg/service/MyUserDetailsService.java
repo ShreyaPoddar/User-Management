@@ -16,6 +16,6 @@ public class MyUserDetailsService implements UserDetailsService {
         if ("shreya".equals(s)) {
             return new User("shreya", "pass", new ArrayList<>());
         } else
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException("User not found:"+s);
     }
 }
