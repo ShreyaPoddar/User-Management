@@ -23,6 +23,7 @@ public class TransactionService {
     @Autowired
     private TransactionRepository transactionrepository;
 
+
     public List<Wallet> findByPhonenumber(String phonenumber) //Finding user data from wallet table
     {
 
@@ -33,6 +34,13 @@ public class TransactionService {
         transactionrepository.save(transaction);
 
     }
+
+    public void makeTransaction(Wallet wallet) {
+        walletrepository.save(wallet);
+
+    }
+
+
 
     public Double getTransactionAmount(Transaction transaction) {
         return transaction.getAmount();

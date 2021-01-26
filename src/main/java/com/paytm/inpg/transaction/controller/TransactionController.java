@@ -1,7 +1,9 @@
 package com.paytm.inpg.transaction.controller;
 
 import com.paytm.inpg.transaction.entity.Transaction;
+import com.paytm.inpg.transaction.entity.TransactionElastic;
 import com.paytm.inpg.transaction.service.TransactionService;
+import com.paytm.inpg.transaction.service.TransactionServiceElastic;
 import com.paytm.inpg.user.entity.User;
 import com.paytm.inpg.wallet.entity.Wallet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class TransactionController {
 
     @Autowired
     TransactionService transactionservice;
+
+    @Autowired
+    TransactionServiceElastic service;
 
     @Autowired
     private KafkaTemplate<String,List<Transaction>> kafkaTemplate;
@@ -50,8 +55,40 @@ public class TransactionController {
         Double credit=payee_phone_numbers.get(0).getBalance() + transactionservice.getTransactionAmount(transaction);
         payee_phone_numbers.get(0).setBalance(credit);
 
+        transactionservice.makeTransaction( payer_phone_numbers.get(0));
+        transactionservice.makeTransaction( payee_phone_numbers.get(0));
         //adding the transaction to the transaction table
         transactionservice.makeTransaction(transaction);
+        return "Transaction successful";
+    }
+
+    //Post method for Elastic Search
+    @PostMapping("/transaction1")
+    public String addtransaction(@RequestBody TransactionElastic transactionElastic) {
+        //Method to make transaction from payer to payee's account
+        List<Wallet> payer_phone_numbers = service.findByPhonenumber(transactionElastic.getPayerphonenumber());
+        List<Wallet> payee_phone_numbers = service.findByPhonenumber(transactionElastic.getPayeephonenumber());
+
+        //Checking if payer and payee wallet exists or not
+        if (payee_phone_numbers.isEmpty() || payer_phone_numbers.isEmpty())
+            return "Payee/Payer wallet doesn't exist";
+        else if(service.getTransactionAmount(transactionElastic)>payer_phone_numbers.get(0).getBalance())
+            return "Payer doesn't have sufficient balance";
+
+        //If both the payer and payee wallets ahave sufficient balance then making the transaction
+
+        //Payer's balance gets debited
+        Double debit=payer_phone_numbers.get(0).getBalance() - service.getTransactionAmount(transactionElastic);
+        payer_phone_numbers.get(0).setBalance(debit);
+
+        //Payee's balance gets credited
+        Double credit=payee_phone_numbers.get(0).getBalance() + service.getTransactionAmount(transactionElastic);
+        payee_phone_numbers.get(0).setBalance(credit);
+
+        service.makeTransactiontowallet(payer_phone_numbers.get(0));
+        service.makeTransactiontowallet(payee_phone_numbers.get(0));
+        //adding the transaction to the transaction table
+        service.makeTransaction(transactionElastic);
         return "Transaction successful";
     }
     //Get method
