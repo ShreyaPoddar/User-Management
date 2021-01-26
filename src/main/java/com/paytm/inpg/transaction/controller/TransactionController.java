@@ -63,8 +63,8 @@ public class TransactionController {
     }
 
     //Post method for Elastic Search
-    @PostMapping("/transaction1")
-    public String addtransaction(@RequestBody TransactionElastic transactionElastic) {
+    @PostMapping("/transactionelastic")
+    public String addtransactionelastic(@RequestBody TransactionElastic transactionElastic) {
         //Method to make transaction from payer to payee's account
         List<Wallet> payer_phone_numbers = service.findByPhonenumber(transactionElastic.getPayerphonenumber());
         List<Wallet> payee_phone_numbers = service.findByPhonenumber(transactionElastic.getPayeephonenumber());
@@ -118,8 +118,9 @@ public class TransactionController {
 
         //finding the users with the given user id
         List<User> users=transactionservice.findByUserid(id);
-
-
+        List <Transaction> alltransactions = new ArrayList<>();
+        if(!users.isEmpty())
+        {
         //storing the phone number of the user
         String number=users.get(0).getMobilenumber();
 
@@ -130,9 +131,8 @@ public class TransactionController {
         List<Transaction> payee_details=transactionservice.findByPayeephonenumber(number);
 
         //Merging both the lists
-        List <Transaction> alltransactions = new ArrayList<>();
-        if(!users.isEmpty())
-        {
+
+
             alltransactions.addAll(payer_details);
             alltransactions.addAll(payee_details);
         }
@@ -140,6 +140,11 @@ public class TransactionController {
 
 
     }
+
+
+    
+
+
 
 
     @GetMapping("/transactionsum/{id}")

@@ -15,10 +15,10 @@ public class TransactionServiceElastic {
     @Autowired
     private WalletRepository walletrepository;
     @Autowired
-    private TransactionRepositoryElastic transactionRepositoryElastic;
+    private TransactionRepositoryElastic repository;
 
     public void makeTransaction(TransactionElastic transactionElastic) {
-        transactionRepositoryElastic.save(transactionElastic);
+        repository.save(transactionElastic);
 
     }
     public void makeTransactiontowallet(Wallet wallet) {
