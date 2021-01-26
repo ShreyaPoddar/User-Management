@@ -25,10 +25,7 @@ public class TransactionController {
     TransactionServiceElastic service;
 
     @Autowired
-    private KafkaTemplate<String,List<Transaction>> kafkaTemplate;
-
-    @Autowired
-    private KafkaTemplate<String,String> kafkaTemplate1;
+    private KafkaTemplate<String,TransactionElastic> kafkaTemplate;
 
     private static final String TOPIC="transactionSummary_byid";
 
@@ -57,6 +54,7 @@ public class TransactionController {
 
         transactionservice.makeTransaction( payer_phone_numbers.get(0));
         transactionservice.makeTransaction( payee_phone_numbers.get(0));
+
         //adding the transaction to the transaction table
         transactionservice.makeTransaction(transaction);
         return "Transaction successful";
@@ -89,6 +87,8 @@ public class TransactionController {
         service.makeTransactiontowallet(payee_phone_numbers.get(0));
         //adding the transaction to the transaction table
         service.makeTransaction(transactionElastic);
+        //adding the transaction to kafka db
+        kafkaTemplate.send(TOPIC,transactionElastic);
         return "Transaction successful";
     }
 
@@ -166,43 +166,5 @@ public class TransactionController {
         }
         return alltransactions;
     }
-
-
-
-
-
-
-
-    @GetMapping("/transactionsum/{id}")
-    public String post(@PathVariable int id) {
-
-        //finding the users with the given user id
-        List<User> users=transactionservice.findByUserid(id);
-
-
-        //storing the phone number of the user
-        String number=users.get(0).getMobilenumber();
-
-        //making the list of transactions having the user as payer
-        List<Transaction> payer_details=transactionservice.findByPayerphonenumber(number);
-
-        ////making the list of transactions having the user as payee
-        List<Transaction> payee_details=transactionservice.findByPayeephonenumber(number);
-
-        //Merging both the lists
-        List <Transaction> alltransactions = new ArrayList<>();
-        if(!users.isEmpty()) {
-            alltransactions.addAll(payer_details);
-            alltransactions.addAll(payee_details);
-        }
-//            kafkaTemplate.send(TOPIC,blank);
-            kafkaTemplate1.send(TOPIC,"Received");
-
-            return "Transaction summary printed successfully";
-        }
-
-
-
-
-}
+    }
 
