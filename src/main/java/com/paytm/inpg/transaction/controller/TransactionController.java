@@ -7,6 +7,7 @@ import com.paytm.inpg.wallet.entity.Wallet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -17,6 +18,14 @@ public class TransactionController {
 
     @Autowired
     TransactionService transactionservice;
+
+    @Autowired
+    private KafkaTemplate<String,List<Transaction>> kafkaTemplate;
+
+    @Autowired
+    private KafkaTemplate<String,String> kafkaTemplate1;
+
+    private static final String TOPIC="transactionSummary_byid";
 
     //Post method
     @PostMapping("/transaction")
@@ -84,16 +93,47 @@ public class TransactionController {
         List<Transaction> payee_details=transactionservice.findByPayeephonenumber(number);
 
         //Merging both the lists
-        payee_details.addAll(payer_details);
-        if(payee_details.isEmpty() || users.isEmpty())
+        List <Transaction> alltransactions = new ArrayList<>();
+        if(!users.isEmpty())
         {
-            List <Transaction> blank = new ArrayList<>();
-            return blank;
+            alltransactions.addAll(payer_details);
+            alltransactions.addAll(payee_details);
         }
-        else
-            return payee_details;
+            return alltransactions;
+
 
     }
+
+
+    @GetMapping("/transactionsum/{id}")
+    public String post(@PathVariable int id) {
+
+        //finding the users with the given user id
+        List<User> users=transactionservice.findByUserid(id);
+
+
+        //storing the phone number of the user
+        String number=users.get(0).getMobilenumber();
+
+        //making the list of transactions having the user as payer
+        List<Transaction> payer_details=transactionservice.findByPayerphonenumber(number);
+
+        ////making the list of transactions having the user as payee
+        List<Transaction> payee_details=transactionservice.findByPayeephonenumber(number);
+
+        //Merging both the lists
+        List <Transaction> alltransactions = new ArrayList<>();
+        if(!users.isEmpty()) {
+            alltransactions.addAll(payer_details);
+            alltransactions.addAll(payee_details);
+        }
+//            kafkaTemplate.send(TOPIC,blank);
+            kafkaTemplate1.send(TOPIC,"Received");
+
+            return "Transaction summary printed successfully";
+        }
+
+
 
 
 }
