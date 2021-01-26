@@ -1,5 +1,6 @@
 package com.paytm.inpg.transaction.controller;
 
+import com.paytm.inpg.transaction.entity.KafkaProducer;
 import com.paytm.inpg.transaction.entity.Transaction;
 import com.paytm.inpg.transaction.entity.TransactionElastic;
 import com.paytm.inpg.transaction.service.TransactionService;
@@ -9,7 +10,6 @@ import com.paytm.inpg.wallet.entity.Wallet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,9 +25,12 @@ public class TransactionController {
     TransactionServiceElastic service;
 
     @Autowired
-    private KafkaTemplate<String,TransactionElastic> kafkaTemplate;
+    KafkaProducer kafkaProducer;
 
-    private static final String TOPIC="transactionSummary_byid";
+//    @Autowired
+//    private KafkaTemplate<String,TransactionElastic> kafkaTemplate;
+//
+//    private static final String TOPIC="transactionSummary_byid";
 
     //Post method
     @PostMapping("/transaction")
@@ -88,7 +91,7 @@ public class TransactionController {
         //adding the transaction to the transaction table
         service.makeTransaction(transactionElastic);
         //adding the transaction to kafka db
-        kafkaTemplate.send(TOPIC,transactionElastic);
+        kafkaProducer.send(transactionElastic);
         return "Transaction successful";
     }
 
