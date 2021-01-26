@@ -2,6 +2,8 @@ package com.paytm.inpg.transaction.service;
 
 import com.paytm.inpg.transaction.entity.TransactionElastic;
 import com.paytm.inpg.transaction.repository.TransactionRepositoryElastic;
+import com.paytm.inpg.user.entity.User;
+import com.paytm.inpg.user.repository.UserRepository;
 import com.paytm.inpg.wallet.entity.Wallet;
 import com.paytm.inpg.wallet.repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import java.util.List;
 @Service
 public class TransactionServiceElastic {
 
+    @Autowired
+    private UserRepository userrepository;
     @Autowired
     private WalletRepository walletrepository;
     @Autowired
@@ -32,6 +36,19 @@ public class TransactionServiceElastic {
     }
     public Double getTransactionAmount(TransactionElastic transactionElastic) {
         return transactionElastic.getAmount();
+    }
+    public List<User> findByUserid(int id) //Finding user data from user table
+    {
+
+        return userrepository.findByUserid(id);
+    }
+
+    public List<TransactionElastic> findByPayerphonenumber(String payerphonenumber) {
+        return repository.findByPayerphonenumber(payerphonenumber);
+    }
+
+    public List<TransactionElastic> findByPayeephonenumber(String payeephonenumber) {
+        return repository.findByPayeephonenumber(payeephonenumber);
     }
 
 

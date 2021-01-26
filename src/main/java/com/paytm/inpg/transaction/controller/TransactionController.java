@@ -91,8 +91,9 @@ public class TransactionController {
         service.makeTransaction(transactionElastic);
         return "Transaction successful";
     }
-    //Get method
 
+
+    //Get method
     @GetMapping("/transactions")
     //Gives all the transactions
     public Page<Transaction> findAllTransactions(Pageable page)  {
@@ -141,8 +142,33 @@ public class TransactionController {
 
     }
 
+    //Give the transaction summary of a particular user
+    @GetMapping("/transactionsummaryelastic/{id}")
+    public List<TransactionElastic> findByuseridelastic(@PathVariable int id) {
 
-    
+        //finding the users with the given user id
+        List<User> users=service.findByUserid(id);
+        List <TransactionElastic> alltransactions = new ArrayList<>();
+        if(!users.isEmpty())
+        {
+            //storing the phone number of the user
+            String number=users.get(0).getMobilenumber();
+
+            //making the list of transactions having the user as payer
+            List<TransactionElastic> payer_details=service.findByPayerphonenumber(number);
+
+            ////making the list of transactions having the user as payee
+            List<TransactionElastic> payee_details=service.findByPayeephonenumber(number);
+
+            //Merging both the lists
+            alltransactions.addAll(payer_details);
+            alltransactions.addAll(payee_details);
+        }
+        return alltransactions;
+    }
+
+
+
 
 
 
