@@ -4,10 +4,8 @@ package com.paytm.inpg.transaction.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.annotation.Id;
-
-import javax.persistence.GeneratedValue;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 
 
@@ -18,7 +16,7 @@ import javax.persistence.GeneratedValue;
 public class TransactionElastic {
 
     @Id
-    @GeneratedValue
+//    @GeneratedValue
     private int transactionid;
 
     private String payerphonenumber;
