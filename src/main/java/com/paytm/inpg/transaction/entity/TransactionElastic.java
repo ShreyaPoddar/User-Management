@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+import javax.persistence.GeneratedValue;
 
 
 @Data
@@ -16,8 +17,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 public class TransactionElastic {
 
     @Id
-//    @GeneratedValue
-    private int transactionid;
+    @GeneratedValue
+    private String transactionid;
 
     private String payerphonenumber;
     private String payeephonenumber;

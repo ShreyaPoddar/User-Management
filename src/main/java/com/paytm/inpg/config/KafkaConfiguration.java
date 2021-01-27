@@ -42,7 +42,7 @@ public class KafkaConfiguration {
 
     //For consuming messages, we need to configure a ConsumerFactory and a KafkaListenerContainerFactory.
     @Bean
-    public ConsumerFactory<String,TransactionElastic> consumerFactory()
+    public ConsumerFactory<String, TransactionElastic> consumerFactory()
     {
         Map<String,Object> config=new HashMap<>();
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,"127.0.0.1:9092");
@@ -59,4 +59,5 @@ public class KafkaConfiguration {
         factory.setConsumerFactory(consumerFactory());
         return factory;
     }
+
 }

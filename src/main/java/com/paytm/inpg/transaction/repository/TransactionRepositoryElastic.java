@@ -8,7 +8,7 @@ import java.util.List;
 
 
 @Repository
-public interface TransactionRepositoryElastic extends ElasticsearchRepository<TransactionElastic,Integer> {
+public interface TransactionRepositoryElastic extends ElasticsearchRepository<TransactionElastic,String> {
     List<TransactionElastic> findByPayerphonenumber(String payerphonenumber);
     List<TransactionElastic> findByPayeephonenumber(String payeephonenumber);
 }

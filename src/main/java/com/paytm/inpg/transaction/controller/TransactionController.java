@@ -45,7 +45,7 @@ public class TransactionController {
         else if(transactionservice.getTransactionAmount(transaction)>payer_phone_numbers.get(0).getBalance())
             return "Payer doesn't have sufficient balance";
 
-        //If both the payer and payee wallets ahave sufficient balance then making the transaction
+        //If both the payer and payee wallets have sufficient balance then making the transaction
 
         //Payer's balance gets debited
         Double debit=payer_phone_numbers.get(0).getBalance() - transactionservice.getTransactionAmount(transaction);
@@ -64,7 +64,7 @@ public class TransactionController {
     }
 
     //Post method for Elastic Search
-    @PostMapping("/transactionelastic")
+    @PostMapping("/transaction1")
     public String addtransactionelastic(@RequestBody TransactionElastic transactionElastic) {
         //Method to make transaction from payer to payee's account
         List<Wallet> payer_phone_numbers = service.findByPhonenumber(transactionElastic.getPayerphonenumber());
@@ -88,7 +88,7 @@ public class TransactionController {
 
         service.makeTransactiontowallet(payer_phone_numbers.get(0));
         service.makeTransactiontowallet(payee_phone_numbers.get(0));
-        //adding the transaction to the transaction table
+        //adding the transaction to the elastic search db
         service.makeTransaction(transactionElastic);
         //adding the transaction to kafka db
         kafkaProducer.send(transactionElastic);
@@ -145,8 +145,8 @@ public class TransactionController {
 
     }
 
-    //Give the transaction summary of a particular user
-    @GetMapping("/transactionsummaryelastic/{id}")
+    //Give the transaction summary of a particular user from ElasticSearch db
+    @GetMapping("/transactionsummary1/{id}")
     public List<TransactionElastic> findByuseridelastic(@PathVariable int id) {
 
         //finding the users with the given user id
@@ -167,6 +167,8 @@ public class TransactionController {
             alltransactions.addAll(payer_details);
             alltransactions.addAll(payee_details);
         }
+//        kafkaProducer.sendtransactions(alltransactions);
+
         return alltransactions;
     }
     }

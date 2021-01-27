@@ -21,10 +21,14 @@ public class TransactionServiceElastic {
     @Autowired
     private TransactionRepositoryElastic repository;
 
+
+    //saving transaction to the transaction repo
     public void makeTransaction(TransactionElastic transactionElastic) {
         repository.save(transactionElastic);
 
     }
+
+    //updating wallet balance
     public void makeTransactiontowallet(Wallet wallet) {
         walletrepository.save(wallet);
 
@@ -34,6 +38,8 @@ public class TransactionServiceElastic {
 
         return walletrepository.findByPhonenumber(phonenumber);
     }
+
+    //getting the amount for which transaction is to be made
     public Double getTransactionAmount(TransactionElastic transactionElastic) {
         return transactionElastic.getAmount();
     }
